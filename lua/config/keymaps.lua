@@ -25,6 +25,8 @@ Snacks.toggle.option("list", { name = "List Mode" }):map("\\l")
 Snacks.toggle.option("wrap", { name = "Wrap" }):map("\\w")
 
 map("n", "\\t0", "<cmd>set textwidth=0 colorcolumn=<cr>", { desc = "Reset textwidth", silent = true })
+map("n", "\\t2", "<cmd>set textwidth=120 colorcolumn=+1<cr>", { desc = "Set textwidth=120", silent = true })
 map("n", "\\t5", "<cmd>set textwidth=50 colorcolumn=+1<cr>", { desc = "Set textwidth=50", silent = true })
 map("n", "\\t7", "<cmd>set textwidth=72 colorcolumn=+1<cr>", { desc = "Set textwidth=72", silent = true })
 map("n", "\\t8", "<cmd>set textwidth=80 colorcolumn=+1<cr>", { desc = "Set textwidth=80", silent = true })
+map("n", "\\tg", "<cmd>GitCommitLimits<cr>", { desc = "Set commit textwidth", silent = true })
