@@ -10,6 +10,7 @@ map("n", ",", "<C-^>", { desc = "Switch to Other Buffer", remap = true, silent =
 map("n", "<leader>bn", "<Cmd>bn<CR>", { desc = "Next Buffer", remap = true })
 map("n", "<leader>bp", "<Cmd>bp<CR>", { desc = "Prev Buffer", remap = true })
 map("n", "<M-f>", "<leader><space>", { desc = "Find Files (Root Dir)", remap = true })
+map("n", "<M-a>", "<leader>sg", { desc = "Grep (Root Dir)", remap = true })
 map("n", "<M-x>", "<Cmd>bd<CR>", { desc = "Delete Buffer", remap = true, silent = true })
 
 -- ── File ─────────────────────────────────────────────────────────────────

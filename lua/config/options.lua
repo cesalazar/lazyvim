@@ -6,7 +6,7 @@ local opt = vim.opt
 
 opt.clipboard = "unnamed"
 opt.cursorline = false
-opt.list = false
 opt.listchars = "eol:¬,tab:▸-▸,extends:❯,precedes:❮,space:·,trail:X,nbsp:!"
+opt.list = false
 opt.scrolloff = 7
-opt.showtabline = 2 -- TODO: Doesn't work
+opt.showtabline = 2
