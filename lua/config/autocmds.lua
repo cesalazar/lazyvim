@@ -29,8 +29,13 @@ local function setup_gitcommit_limits()
 end
 
 vim.api.nvim_create_user_command("GitCommitLimits", setup_gitcommit_limits, { desc = "Set git commit textwidth" })
+vim.api.nvim_create_autocmd("FileType", { pattern = "gitcommit", callback = setup_gitcommit_limits })
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "gitcommit",
-  callback = setup_gitcommit_limits,
-})
+-- Open help as a full listed buffer
+vim.api.nvim_create_user_command("H", function(opts)
+  vim.cmd("help " .. opts.args)
+  vim.cmd("only")
+  vim.bo.buflisted = true
+end, { nargs = "?", complete = "help", desc = "Open help as listed buffer" })
+vim.cmd("cabbrev h H")
+vim.cmd("cabbrev help H")
