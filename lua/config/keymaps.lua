@@ -9,8 +9,10 @@ local map = vim.keymap.set
 map("n", ",", "<C-^>", { desc = "Switch to Other Buffer", remap = true, silent = true })
 map("n", "<leader>bn", "<Cmd>bn<CR>", { desc = "Next Buffer", remap = true })
 map("n", "<leader>bp", "<Cmd>bp<CR>", { desc = "Prev Buffer", remap = true })
-map("n", "<M-f>", "<leader><space>", { desc = "Find Files (Root Dir)", remap = true })
+map("n", "<leader>by", "<Cmd>YankPath<CR>", { desc = "Yank Absolute Path", silent = true })
+map("n", "<leader>bY", "<Cmd>YankPath!<CR>", { desc = "Yank Relative Path", silent = true })
 map("n", "<M-a>", "<leader>sg", { desc = "Grep (Root Dir)", remap = true })
+map("n", "<M-f>", "<leader><space>", { desc = "Find Files (Root Dir)", remap = true })
 map("n", "<M-x>", "<Cmd>bd<CR>", { desc = "Delete Buffer", remap = true, silent = true })
 
 -- ── File ─────────────────────────────────────────────────────────────────
@@ -20,8 +22,11 @@ map("n", "<M-N>", "<leader>fe", { desc = "Explorer Snacks (Root Dir)", remap = t
 
 -- ── Editing ──────────────────────────────────────────────────────────────
 map("n", "Y", "yy", { desc = "Copy line with linebreak", remap = true, silent = true })
+map("v", "<M-h>", "<gv", { desc = "Indent Left", silent = true })
+map("v", "<M-l>", ">gv", { desc = "Indent Right", silent = true })
 map("v", "<M-s>", ":sort l<CR>", { desc = "Sort selection", remap = true, silent = true })
 map("v", "<M-y>", '"+y', { desc = "Yank to clipboard", remap = true })
+map("v", "S", "gsa", { desc = "Add Surrounding", remap = true, silent = true })
 
 -- ── Options ──────────────────────────────────────────────────────────────
 Snacks.toggle.option("list", { name = "List Mode" }):map("\\l")

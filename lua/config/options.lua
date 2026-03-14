@@ -2,8 +2,12 @@
 -- Default options that are always set:
 -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 
-local opt = vim.opt
+vim.diagnostic.enable(false)
 
+vim.cmd("cabbrev h H")
+vim.cmd("cabbrev help H")
+
+local opt = vim.opt
 opt.clipboard = "unnamed"
 opt.cursorline = false
 opt.listchars = "eol:¬,tab:▸-▸,extends:❯,precedes:❮,space:·,trail:X,nbsp:!"
