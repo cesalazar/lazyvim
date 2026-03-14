@@ -20,6 +20,10 @@ map("n", "\\\\", "<Cmd>w<CR>", { desc = "Write Buffer", silent = true })
 map("n", "<M-n>", "<leader>fE", { desc = "Explorer Snacks (cwd)", remap = true })
 map("n", "<M-N>", "<leader>fe", { desc = "Explorer Snacks (Root Dir)", remap = true })
 
+-- ── Checkboxes ───────────────────────────────────────────────────────────
+map("n", "\\x", ToggleCheckbox, { desc = "Toggle Checkbox", silent = true })
+map("n", "\\-", ToggleStrikethrough, { desc = "Toggle Strikethrough", silent = true })
+
 -- ── Editing ──────────────────────────────────────────────────────────────
 map("n", "Y", "yy", { desc = "Copy line with linebreak", remap = true, silent = true })
 map("v", "<M-h>", "<gv", { desc = "Indent Left", silent = true })

@@ -59,3 +59,86 @@ vim.api.nvim_create_autocmd("FileType", {
     end)
   end,
 })
+
+-- ── Checkbox functions ───────────────────────────────────────────────────
+local function parse_checkbox(lnum)
+  local line = vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1]
+  local prefix, state = line:match("^(%s*%- %[([%sx])%] )")
+  if not prefix then
+    return nil
+  end
+  return prefix, state, line:sub(#prefix + 1)
+end
+
+local function label_end(lnum, indent_len)
+  local end_lnum = lnum
+  local total = vim.api.nvim_buf_line_count(0)
+  for i = lnum + 1, total do
+    local l = vim.api.nvim_buf_get_lines(0, i - 1, i, false)[1]
+    if l:match("^" .. string.rep(" ", indent_len + 1)) and not l:match("^%s*[-*+] ") then
+      end_lnum = i
+    else
+      break
+    end
+  end
+  return end_lnum
+end
+
+-- Jump to next checkbox after lnum, wrapping to the first one in the buffer
+local function jump_to_next_checkbox(lnum)
+  local total = vim.api.nvim_buf_line_count(0)
+  for i = lnum + 1, total do
+    if parse_checkbox(i) then
+      vim.cmd("normal! m'")
+      vim.fn.cursor(i, 1)
+      return
+    end
+  end
+  for i = 1, lnum do
+    if parse_checkbox(i) then
+      vim.cmd("normal! m'")
+      vim.fn.cursor(i, 1)
+      return
+    end
+  end
+end
+
+function ToggleCheckbox()
+  local lnum = vim.fn.line(".")
+  local prefix, state = parse_checkbox(lnum)
+  if not prefix then
+    jump_to_next_checkbox(0)
+    return
+  end
+
+  local new_state = state == " " and "x" or " "
+  local line = vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1]
+  vim.api.nvim_buf_set_lines(0, lnum - 1, lnum, false, {
+    (line:gsub("^(%s*%- %[)[%sx](%] )", "%1" .. new_state .. "%2", 1)),
+  })
+  jump_to_next_checkbox(lnum)
+end
+
+function ToggleStrikethrough()
+  local lnum = vim.fn.line(".")
+  local prefix, _, first_label = parse_checkbox(lnum)
+  if not prefix or not first_label then
+    jump_to_next_checkbox(0)
+    return
+  end
+
+  local indent_len = #(prefix:match("^(%s*)"))
+  local end_lnum = label_end(lnum, indent_len)
+  local lines = vim.api.nvim_buf_get_lines(0, lnum - 1, end_lnum, false)
+
+  if first_label:match("^~") and lines[#lines]:match("~$") then
+    lines[1] = prefix .. first_label:sub(2)
+    lines[#lines] = lines[#lines]:sub(1, -2)
+  else
+    lines[1] = prefix .. "~" .. first_label
+    lines[#lines] = lines[#lines] .. "~"
+  end
+
+  vim.api.nvim_buf_set_lines(0, lnum - 1, end_lnum, false, lines)
+  jump_to_next_checkbox(end_lnum)
+end
