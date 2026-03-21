@@ -3,7 +3,7 @@
 -- https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 
 -- Diagnostic annotations related to the code
-vim.diagnostic.enable(false)
+-- vim.diagnostic.enable(false)
 
 vim.cmd("cabbrev h H")
 vim.cmd("cabbrev help H")
