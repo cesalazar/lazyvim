@@ -119,6 +119,100 @@ function ToggleCheckbox()
   jump_to_next_checkbox(lnum)
 end
 
+-- ── Delete HTML comment ──────────────────────────────────────────────
+function DeleteHtmlComment()
+  local total = vim.api.nvim_buf_line_count(0)
+  local cursor = vim.fn.line(".")
+  local start_lnum = nil
+  local end_lnum = nil
+
+  -- Search backwards from cursor for <!--
+  for i = cursor, 1, -1 do
+    local line = vim.api.nvim_buf_get_lines(0, i - 1, i, false)[1]
+    if line:find("<!%-%-") then
+      start_lnum = i
+      if line:find("%-%->") then
+        end_lnum = i -- single-line comment
+      end
+      break
+    elseif line:find("%-%->") and i ~= cursor then
+      break -- hit --> before <!--, cursor is outside any comment
+    end
+  end
+
+  -- If not found behind cursor, search forward
+  if not start_lnum then
+    for i = cursor + 1, total do
+      local line = vim.api.nvim_buf_get_lines(0, i - 1, i, false)[1]
+      if line:find("<!%-%-") then
+        start_lnum = i
+        if line:find("%-%->") then
+          end_lnum = i
+        end
+        break
+      end
+    end
+  end
+
+  if not start_lnum then
+    vim.notify("No HTML comment found", vim.log.levels.WARN)
+    return
+  end
+
+  -- Find closing --> if not already found (multiline comment)
+  if not end_lnum then
+    for i = start_lnum + 1, total do
+      local line = vim.api.nvim_buf_get_lines(0, i - 1, i, false)[1]
+      if line:find("%-%->") then
+        end_lnum = i
+        break
+      end
+    end
+  end
+
+  if not end_lnum then
+    vim.notify("No closing --> for HTML comment", vim.log.levels.WARN)
+    return
+  end
+
+  vim.api.nvim_buf_set_lines(0, start_lnum - 1, end_lnum, false, {})
+  vim.notify("Deleted HTML comment", vim.log.levels.INFO)
+end
+
+function DeleteAllHtmlComments()
+  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+  local result = {}
+  local inside = false
+  local count = 0
+
+  for _, line in ipairs(lines) do
+    if not inside then
+      if line:find("<!%-%-") then
+        if line:find("%-%->") then
+          count = count + 1 -- single-line, skip it
+        else
+          inside = true
+          count = count + 1
+        end
+      else
+        result[#result + 1] = line
+      end
+    else
+      if line:find("%-%->") then
+        inside = false
+      end
+    end
+  end
+
+  if count == 0 then
+    vim.notify("No HTML comments found", vim.log.levels.WARN)
+    return
+  end
+
+  vim.api.nvim_buf_set_lines(0, 0, -1, false, result)
+  vim.notify("Deleted " .. count .. " HTML comment(s)", vim.log.levels.INFO)
+end
+
 function ToggleStrikethrough()
   local lnum = vim.fn.line(".")
   local prefix, _, first_label = parse_checkbox(lnum)

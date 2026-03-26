@@ -23,6 +23,8 @@ map("n", "<M-N>", "<leader>fe", { desc = "Explorer Snacks (Root Dir)", remap = t
 -- ── Checkboxes ───────────────────────────────────────────────────────────
 map("n", "\\x", ToggleCheckbox, { desc = "Toggle Checkbox", silent = true })
 map("n", "\\-", ToggleStrikethrough, { desc = "Toggle Strikethrough", silent = true })
+map("n", "\\h", DeleteHtmlComment, { desc = "Delete HTML comment", silent = true })
+map("n", "\\H", DeleteAllHtmlComments, { desc = "Delete all HTML comments", silent = true })
 
 -- ── Editing ──────────────────────────────────────────────────────────────
 map("n", "Y", "yy", { desc = "Copy line with linebreak", remap = true, silent = true })
