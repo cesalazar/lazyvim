@@ -31,6 +31,7 @@ map("v", "<M-l>", ">gv", { desc = "Indent Right", silent = true })
 map("v", "<M-s>", ":sort l<CR>", { desc = "Sort selection", remap = true, silent = true })
 map("v", "<M-y>", '"+y', { desc = "Yank to clipboard", remap = true })
 map("v", "S", "gsa", { desc = "Add Surrounding", remap = true, silent = true })
+map("v", "Q", "gw", { desc = "Wrap lines at textwidth", silent = true })
 
 -- ── Options ──────────────────────────────────────────────────────────────
 Snacks.toggle.option("list", { name = "List Mode" }):map("\\l")
