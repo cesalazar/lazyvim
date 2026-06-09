@@ -60,6 +60,51 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- ── Smart buffer delete ──────────────────────────────────────────────────
+-- `:bd` lets Vim pick the replacement buffer for the window, which often
+-- lands on a non-regular buffer (snacks tree, claude, etc.) and traps
+-- focus there. This switches the current window to a normal buffer first.
+local function is_normal_buf(buf)
+  return vim.api.nvim_buf_is_valid(buf)
+    and vim.bo[buf].buflisted
+    and vim.bo[buf].buftype == ""
+end
+
+function SmartBufDelete()
+  local current = vim.api.nvim_get_current_buf()
+  local win = vim.api.nvim_get_current_win()
+
+  if not is_normal_buf(current) then
+    vim.cmd("bdelete")
+    return
+  end
+
+  local bufs = vim.tbl_filter(is_normal_buf, vim.api.nvim_list_bufs())
+  local target
+  for i, b in ipairs(bufs) do
+    if b == current then
+      target = bufs[i - 1] or bufs[i + 1]
+      break
+    end
+  end
+
+  if target then
+    vim.api.nvim_win_set_buf(win, target)
+  else
+    vim.api.nvim_win_call(win, function()
+      vim.cmd("enew")
+    end)
+  end
+
+  local ok, err = pcall(vim.cmd, "bdelete " .. current)
+  if not ok then
+    vim.api.nvim_win_set_buf(win, current)
+    vim.notify(err, vim.log.levels.ERROR)
+  end
+end
+
+vim.api.nvim_create_user_command("BD", SmartBufDelete, { desc = "Smart delete buffer" })
+
 -- ── Checkbox functions ───────────────────────────────────────────────────
 local function parse_checkbox(lnum)
   local line = vim.api.nvim_buf_get_lines(0, lnum - 1, lnum, false)[1]

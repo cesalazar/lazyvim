@@ -13,7 +13,7 @@ map("n", "<leader>by", "<Cmd>YankPath<CR>", { desc = "Yank Absolute Path", silen
 map("n", "<leader>bY", "<Cmd>YankPath!<CR>", { desc = "Yank Relative Path", silent = true })
 map("n", "<M-a>", "<leader>sg", { desc = "Grep (Root Dir)", remap = true })
 map("n", "<M-f>", "<leader><space>", { desc = "Find Files (Root Dir)", remap = true })
-map("n", "<M-x>", "<Cmd>bd<CR>", { desc = "Delete Buffer", remap = true, silent = true })
+map("n", "<M-x>", SmartBufDelete, { desc = "Delete Buffer", silent = true })
 
 -- ── File ─────────────────────────────────────────────────────────────────
 map("n", "<localleader><localleader>", "<Cmd>w<CR>", { desc = "Write Buffer", silent = true })
