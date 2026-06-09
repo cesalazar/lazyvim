@@ -19,3 +19,4 @@ opt.list = false
 opt.relativenumber = false
 opt.scrolloff = 7
 opt.showtabline = 2
+vim.g.lazyvim_mini_snippets_in_completion = true

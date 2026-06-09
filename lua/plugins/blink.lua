@@ -19,11 +19,11 @@ return {
         ["<S-Tab>"] = { "select_prev", "fallback" },
         ["<Tab>"] = { "show", "select_next", "fallback" },
       },
-      -- sources = {
-      --   providers = {
-      --     snippets = { score_offset = 1 },
-      --   },
-      -- },
+      sources = {
+        providers = {
+          snippets = { score_offset = 1 },
+        },
+      },
     },
   },
 }
